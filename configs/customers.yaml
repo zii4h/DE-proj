@@ -1,0 +1,20 @@
+pipeline: customers_sync
+
+source:
+  type: csv
+  path: data/customers.csv
+
+transform:
+  - column: country
+    op: upper
+
+target:
+  type: sqlite
+  db: data/warehouse.db
+  table: customers
+  mode: replace
+
+quality:
+  - check: not_empty
+  - check: no_nulls
+    column: email
